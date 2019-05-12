@@ -66,10 +66,8 @@ class _MxAppState extends State<MxApp> {
 
           theme = thme;
           return MaterialApp(
-            //title: 'Smart Assessment Demo',
             title: strTitle,
-            //home: CounterPageWidget(), // Base widget of the app
-            home: RootWidget(), // Base widget of the app
+            home: RootWidget(),
             theme: theme,
           );
         },
