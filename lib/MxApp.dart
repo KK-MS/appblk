@@ -62,9 +62,10 @@ class _MxAppState extends State<MxApp> {
             strTitle = "Theme change to non-dark !!";
             print(strTitle);
             theme = thme;
-         }
+          }
 
           theme = thme;
+
           return MaterialApp(
             title: strTitle,
             home: RootWidget(),
