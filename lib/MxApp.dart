@@ -70,6 +70,7 @@ class _MxAppState extends State<MxApp> {
             title: strTitle,
             home: RootWidget(),
             theme: theme,
+            debugShowCheckedModeBanner: false,
           );
         },
       ),

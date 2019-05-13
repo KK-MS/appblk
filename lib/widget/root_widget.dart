@@ -38,24 +38,10 @@ class RootWidget extends StatelessWidget {
             itemBuilder: (context, position) {
 
               return Container(
-                      margin: EdgeInsets.all(20),
+                margin: EdgeInsets.all(20),
                 color: position % 2 == 0 ? Colors.pink : Colors.cyan,
-                
-                child:
-               MySwiper(),
-                //PageView.builder(
-                //  physics: new ClampingScrollPhysics(),
-                //  scrollDirection: Axis.horizontal,
-                //  itemBuilder: (context, position) {
-                //    return Container(
-                //      margin: EdgeInsets.all(20),
-                //      color: position % 2 == 0 ? Colors.white : Colors.black,
-                //    );
-                //  },
-                //),
+                child: MySwiperCard(),
               );
-
-
             },
           ),
         )
