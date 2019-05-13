@@ -25,8 +25,11 @@ class RootWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery .of(context) .size .width;
-    double yourWidth = width * 0.65; //
+    double height = MediaQuery .of(context) .size .height;
+    double sectionBarWidth = width * 0.08; //
+    double sectionBarHeight = height;// * 0.95; //
 
+    print("In RootWidget");
     return Scaffold(
       body:
       Stack(children: <Widget>[
@@ -38,15 +41,131 @@ class RootWidget extends StatelessWidget {
             itemBuilder: (context, position) {
 
               return Container(
-                margin: EdgeInsets.all(20),
-                color: position % 2 == 0 ? Colors.pink : Colors.cyan,
-                child: MySwiperCard(),
+                  color: position % 2 == 0 ? Colors.pink : Colors.cyan,
+
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(sectionBarWidth, 15, 0, 0),
+                    decoration: BoxDecoration(
+                      border: Border.all( color: Color(0xFF000000), width: 2.0, ),
+                    ),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          height: height * 0.1,
+                          width: width - sectionBarWidth,
+                          child: Text("Title"),
+                          decoration: BoxDecoration(
+                            border: Border.all( color: Color(0xFF000000), width: 1.0, ),
+                          ),
+                        ),
+
+                        Expanded(
+                          child: Container(
+                            width: width - sectionBarWidth,
+                            decoration: BoxDecoration(
+                              border: Border.all( color: Color(0xFF000000), width: 1.0, ),
+                            ),
+                            child: Stack(
+                              children: <Widget>[
+                                Container(
+                                  //margin: EdgeInsets.fromLTRB(0, 0, 250, 0),
+                                  height: height * 0.75,
+                                  width: width - sectionBarWidth - 250,
+                                  child: MySwiperCard(),
+                                  //child: Text("body"),
+                                  decoration: BoxDecoration(
+                                    border: Border.all( color: Color(0xFF000000), width: 1.0, ),
+                                  ),
+                                ),
+                                Positioned(
+                                  left: width - sectionBarWidth - 250,
+                                  width: 100,
+                                  height: height * 0.75,
+                                  child: Container(
+                                    height: sectionBarHeight,
+                                    width: sectionBarWidth,
+                                    decoration: BoxDecoration(
+                                      color: Colors.amber,
+                                      border: Border.all(
+                                        color: Color(0xFF000000),
+                                        width: 2.0,
+                                      ),
+                                    ),
+                                    child: Text("Tool bar"),
+                                  ),
+                                ),
+
+                               Positioned(
+                                  left: width - sectionBarWidth - 250 + 100,
+                                  width: 100,
+                                  height: height * 0.75,
+                                  child: Container(
+                                    height: sectionBarHeight,
+                                    width: sectionBarWidth,
+                                    decoration: BoxDecoration(
+                                      color: Colors.amber,
+                                      border: Border.all(
+                                        color: Color(0xFF000000),
+                                        width: 2.0,
+                                      ),
+                                    ),
+                                    child: Text("Bar2."),
+                                  ),
+                                ),
+
+                              Positioned(
+                                left: 0, //sectionBarWidth,
+                                bottom: 0, //sectionBarWidth,
+                                child:
+                                Container(
+
+                                  height: height * 0.15,
+                                  width: width - sectionBarWidth,
+                                  child: Text("Pagination"),
+                                  decoration: BoxDecoration(
+                                    color: Colors.blueAccent,
+                                    border: Border.all( color: Color(0xFF000000), width: 1.0, ),
+                                  ),
+                                ),
+                              ),
+
+                              ],
+                            )
+                          ),
+                        ),
+
+                       // Container(
+                       //   height: height * 0.15,
+                       //   width: width - sectionBarWidth,
+                       //   child: Text("Footer"),
+                       //   decoration: BoxDecoration(
+                       //     border: Border.all( color: Color(0xFF000000), width: 1.0, ),
+                       //   ),
+                       // ),
+                      ],
+                    ),
+                  )
               );
             },
           ),
-        )
-      ],)
+        ),
 
+        Positioned(
+          left: 0,
+          child: Container(
+            height: sectionBarHeight,
+            width: sectionBarWidth,
+            decoration: BoxDecoration(
+              //color: Colors.pinkAccent,
+              border: Border.all(
+                color: Color(0xFF000000),
+                width: 2.0,
+              ),
+            ),
+          ),
+        )
+      ],
+      )
     );
 
 
