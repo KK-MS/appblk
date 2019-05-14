@@ -12,6 +12,8 @@ import 'package:mxsa1905/bloc/counter_bloc.dart';
 import 'package:mxsa1905/event/counter_event.dart';
 
 import 'swiper_widget.dart';
+import 'NavigateSection.dart';
+import 'survey_widget.dart';
 
 // See Counter_page_widget.dart for design
 // UI which captures the Action, will be under a function. As it along can change
@@ -21,178 +23,87 @@ import 'swiper_widget.dart';
 
 class RootWidget extends StatelessWidget {
   // BUILD: Start point
+  static const _kDuration = const Duration(milliseconds: 300);
+  static const _kCurve = Curves.easeIn;
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery .of(context) .size .width;
-    double height = MediaQuery .of(context) .size .height;
-    double sectionBarWidth = width * 0.08; //
-    double sectionBarHeight = height;// * 0.95; //
-
+    PageController ctrlPages = PageController(
+      initialPage: 0,
+      viewportFraction: 1.0,
+      keepPage: true
+    );
     print("In RootWidget");
     return Scaffold(
-      body:
-      Stack(children: <Widget>[
+      body: Stack(children: <Widget>[
         Container(
           color: Colors.greenAccent,
           child: PageView.builder(
+            controller: ctrlPages,
             physics: new ClampingScrollPhysics(),
             scrollDirection: Axis.vertical,
             itemBuilder: (context, position) {
+              var pageColor = position % 2 == 0 ? Colors.pink : Colors.cyan;
 
-              return Container(
-                  color: position % 2 == 0 ? Colors.pink : Colors.cyan,
+              switch(position) {
+                case 0:
+                  return Container(
+                    color: pageColor,
+                    child: Text("Welcome : In position:$position"),
+                  );
+                  break;
+                case 1:
+                  return Container(
+                    color: pageColor,
+                    child: Text("Config: In position:$position"),
+                  );
+                  break;
+                case 2:
+                  return Container(
+                    color: pageColor,
+                    child: Text("Assist: In position:$position"),
+                  );
+                  break;
+                case 3:
+                  return Container(
+                    color: pageColor,
+                    child: SurveyWidget( posL: width * 0.08, ),
+                  );
+                  break;
+                case 4:
+                  return Container(
+                    color: pageColor,
+                    child: Text("Graph: In position:$position"),
+                  );
+                  break;
+                default:
+                  return Container(
+                    color: pageColor,
+                    child: Text("Error: In position:$position"),
+                  );
+              }
 
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(sectionBarWidth, 15, 0, 0),
-                    decoration: BoxDecoration(
-                      border: Border.all( color: Color(0xFF000000), width: 2.0, ),
-                    ),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          height: height * 0.1,
-                          width: width - sectionBarWidth,
-                          child: Text("Title"),
-                          decoration: BoxDecoration(
-                            border: Border.all( color: Color(0xFF000000), width: 1.0, ),
-                          ),
-                        ),
-
-                        Expanded(
-                          child: Container(
-                            width: width - sectionBarWidth,
-                            decoration: BoxDecoration(
-                              border: Border.all( color: Color(0xFF000000), width: 1.0, ),
-                            ),
-                            child: Stack(
-                              children: <Widget>[
-                                Container(
-                                  //margin: EdgeInsets.fromLTRB(0, 0, 250, 0),
-                                  height: height * 0.75,
-                                  width: width - sectionBarWidth - 250,
-                                  child: MySwiperCard(),
-                                  //child: Text("body"),
-                                  decoration: BoxDecoration(
-                                    border: Border.all( color: Color(0xFF000000), width: 1.0, ),
-                                  ),
-                                ),
-                                Positioned(
-                                  left: width - sectionBarWidth - 250,
-                                  width: 100,
-                                  height: height * 0.75,
-                                  child: Container(
-                                    height: sectionBarHeight,
-                                    width: sectionBarWidth,
-                                    decoration: BoxDecoration(
-                                      color: Colors.amber,
-                                      border: Border.all(
-                                        color: Color(0xFF000000),
-                                        width: 2.0,
-                                      ),
-                                    ),
-                                    child: Text("Tool bar"),
-                                  ),
-                                ),
-
-                               Positioned(
-                                  left: width - sectionBarWidth - 250 + 100,
-                                  width: 100,
-                                  height: height * 0.75,
-                                  child: Container(
-                                    height: sectionBarHeight,
-                                    width: sectionBarWidth,
-                                    decoration: BoxDecoration(
-                                      color: Colors.amber,
-                                      border: Border.all(
-                                        color: Color(0xFF000000),
-                                        width: 2.0,
-                                      ),
-                                    ),
-                                    child: Text("Bar2."),
-                                  ),
-                                ),
-
-                              Positioned(
-                                left: 0, //sectionBarWidth,
-                                bottom: 0, //sectionBarWidth,
-                                child:
-                                Container(
-
-                                  height: height * 0.15,
-                                  width: width - sectionBarWidth,
-                                  child: Text("Pagination"),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blueAccent,
-                                    border: Border.all( color: Color(0xFF000000), width: 1.0, ),
-                                  ),
-                                ),
-                              ),
-
-                              ],
-                            )
-                          ),
-                        ),
-
-                       // Container(
-                       //   height: height * 0.15,
-                       //   width: width - sectionBarWidth,
-                       //   child: Text("Footer"),
-                       //   decoration: BoxDecoration(
-                       //     border: Border.all( color: Color(0xFF000000), width: 1.0, ),
-                       //   ),
-                       // ),
-                      ],
-                    ),
-                  )
-              );
             },
           ),
         ),
 
         Positioned(
           left: 0,
-          child: Container(
-            height: sectionBarHeight,
-            width: sectionBarWidth,
-            decoration: BoxDecoration(
-              //color: Colors.pinkAccent,
-              border: Border.all(
-                color: Color(0xFF000000),
-                width: 2.0,
-              ),
-            ),
+          child: NavigateSection(
+            controller: ctrlPages,
+            itemCount: 5,
+            onSectionSelected: (int page) {
+              //ctrlPages.jumpToPage(page);
+              // TODO: Add in BLoC function
+              ctrlPages.animateToPage( page,
+                  duration: _kDuration,
+                  curve: _kCurve
+              );
+            },
           ),
         )
-      ],
-      )
-    );
-
-
-
-  }
-
-
-  @override
-  Widget build1(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double yourWidth = width * 0.65; //
-
-    print("In RootWidget BUILD ===================$width");
-    final CounterBloc _counterBloc = BlocProvider.of<CounterBloc>(context);
-    final ThemeBloc _themeBloc = BlocProvider.of<ThemeBloc>(context);
-
-    return Scaffold(
-      body: Container(
-        color: Colors.greenAccent,
-        child: Row(
-          children: <Widget>[
-            RootLeftBar( counterBloc: _counterBloc, themeBloc: _themeBloc ),
-            RootContent( counterBloc: _counterBloc, themeBloc: _themeBloc ),
-            //RootRightBar( counterBloc: _counterBloc, themeBloc: _themeBloc ),
-          ]
-        ) ,
-      ),
+      ], )
     );
   }
 }
@@ -239,7 +150,7 @@ class RootLeftBar extends StatelessWidget {
   // INPUT Widgets
   Widget actionIncrement(CounterBloc _counterBloc) {
     return FlatButton (
-        onPressed: () { _counterBloc.dispatch(CounterEvent.increment); },
+      onPressed: () { _counterBloc.dispatch(CounterEvent.increment); },
       padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: Container(
         decoration: BoxDecoration(
@@ -252,9 +163,9 @@ class RootLeftBar extends StatelessWidget {
         ),
         height: 50,
         child: Row(children: <Widget>[
-        Expanded(child: Container(child: Column(children: <Widget>[ Icon(Icons.add), Text("Add") ],),),),
-        Container(color: Colors.red, width: 5,)
-      ], ), ),
+          Expanded(child: Container(child: Column(children: <Widget>[ Icon(Icons.add), Text("Add") ],),),),
+          Container(color: Colors.red, width: 5,)
+        ], ), ),
     );
   }
 
@@ -281,25 +192,25 @@ class RootRightBar extends StatelessWidget
 
   RootRightBar({this.counterBloc, this.themeBloc});
 
-   // BUILD: Start point
+  // BUILD: Start point
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     print("In RootRightBar BUILD ===================$width");
     return Container(
-     // color: Colors.grey,
+      // color: Colors.grey,
       decoration: new BoxDecoration(
           border: new Border.all(color: Colors.blueAccent)
       ),
       child: Card (child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-            actionIncrement(counterBloc),
-            actionDecrement(counterBloc),
-            actionTheme(themeBloc),
+          actionIncrement(counterBloc),
+          actionDecrement(counterBloc),
+          actionTheme(themeBloc),
         ],
       ),
-    ),
+      ),
     );
   }
   // INPUT Widgets
@@ -342,7 +253,7 @@ class RootContent extends StatelessWidget {
   PageController controller = PageController();
 
 
-   // BUILD: Start point
+  // BUILD: Start point
   @override
   Widget build(BuildContext context) {
     print("In content");
@@ -359,7 +270,7 @@ class RootContent extends StatelessWidget {
     return Container(
         height: height,
 
-      child: PageView.builder(
+        child: PageView.builder(
           scrollDirection: Axis.vertical,
           //physics: new ClampingScrollPhysics(),
           controller: controller,
@@ -377,7 +288,7 @@ class RootContent extends StatelessWidget {
           //    //doSectionSelected(newPage);
           //  }
           //}
-      )
+        )
     ) ;
   }
 
@@ -385,27 +296,27 @@ class RootContent extends StatelessWidget {
     var height = MediaQuery.of(context).size.height;
 
     return //   Expanded(
-          //child:
-          Container(
-             height: height,
-              color: Colors.blueGrey,
-              margin: EdgeInsets.fromLTRB(10, 30, 10, 5),
-             // child: Row(
-             //   children: <Widget>[
-             //     Expanded (
-             //       child: Column(
-             //           crossAxisAlignment: CrossAxisAlignment.start,
-             //           mainAxisAlignment: MainAxisAlignment.center,
-             //           children: <Widget>[
-             //             rootHeader(context),
-             //             rootBody(context),
-             //             rootFooter(context)
-             //           ]
-             //       ),
-             //     )
-             //   ],
-             // )
-          //)
+      //child:
+      Container(
+        height: height,
+        color: Colors.blueGrey,
+        margin: EdgeInsets.fromLTRB(10, 30, 10, 5),
+        // child: Row(
+        //   children: <Widget>[
+        //     Expanded (
+        //       child: Column(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           mainAxisAlignment: MainAxisAlignment.center,
+        //           children: <Widget>[
+        //             rootHeader(context),
+        //             rootBody(context),
+        //             rootFooter(context)
+        //           ]
+        //       ),
+        //     )
+        //   ],
+        // )
+        //)
       );
   }
   // DISPLAY / OUT Widget

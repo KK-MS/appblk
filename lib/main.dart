@@ -53,3 +53,8 @@ void main() {
 //         3-status   
 //     3-row.: Tools etc.
 
+// RootWidget => Creates section pages along with its page navigation
+// NavigateSection => Navigate section pages
+//
+// TODO
+// https://pub.dev/packages/flutter_email_sender
