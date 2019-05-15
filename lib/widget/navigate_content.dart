@@ -57,7 +57,7 @@ class NavigateContent extends AnimatedWidget {
   ];
 
   Widget _buildDot(int index) {
-    print("_buildDot Section  build: $index, ");
+    print("Content _buildDot Section  build: $index, ");
     //if (index == 0) {
     //  return new Container();
     //}

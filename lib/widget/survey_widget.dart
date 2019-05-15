@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'swiper_widget.dart';
-import 'NavigateContent.dart';
+import 'navigate_content.dart';
 
 class SurveyWidget extends StatelessWidget{
   final posL;

@@ -56,27 +56,27 @@ class NavigateSection extends AnimatedWidget {
   ];
 
   Widget _buildDot(int index) {
-    print("_buildDot Section  build: $index, ");
+    //print("Section _buildDot Section  build: $index, ");
     //if (index == 0) {
     //  return new Container();
     //}
 
     // For animation of dot, i.e. size of dot based on the slide position
-    // double selectedness = Curves.easeOut.transform(
-    //   max(
-    //     0.0,
-    //     1.0 - ((controller.page ?? controller.initialPage) - index).abs(),
-    //   ),
-    // );
+     double selectedness = Curves.easeOut.transform(
+       max(
+         0.0,
+         1.0 - ((controller.page ?? controller.initialPage) - index).abs(),
+       ),
+     );
 
     dotColor = color;
-    // int    bSelected = 0;
-    // double zoom      = 1.0 + (_kMaxZoom - 1.0) * selectedness;
-    //
-    // if (zoom > _kColorChange) {
-    //   dotColor = Color.fromARGB(0xA0, 0xFF, 0x50, 0x50);//Colors.red;
-    //   bSelected = 0;
-    // }
+    int    bSelected = 0;
+     double zoom      = 1.0 + (_kMaxZoom - 1.0) * selectedness;
+
+    if (zoom > _kColorChange) {
+       dotColor = Color.fromARGB(0xA0, 0xFF, 0x50, 0x50);//Colors.red;
+       bSelected = 0;
+    }
 
     //String strImage = strImgPath + strOnOff[index][bSelected];
     //String strImage = strImgPath + strOnOff[index][0];

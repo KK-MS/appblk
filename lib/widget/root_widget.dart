@@ -7,12 +7,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // App BLoC includes
 import 'package:mxsa1905/bloc/theme_bloc.dart';
 import 'package:mxsa1905/bloc/counter_bloc.dart';
+import 'package:mxsa1905/bloc/navigate_section_bloc.dart';
 
 // App event imports
 import 'package:mxsa1905/event/counter_event.dart';
+import 'package:mxsa1905/event/navigate_section_event.dart';
 
-import 'swiper_widget.dart';
-import 'NavigateSection.dart';
+// App include widgets
+import 'navigate_section.dart';
 import 'survey_widget.dart';
 
 // See Counter_page_widget.dart for design
@@ -26,85 +28,96 @@ class RootWidget extends StatelessWidget {
   static const _kDuration = const Duration(milliseconds: 300);
   static const _kCurve = Curves.easeIn;
 
+  static  PageController _ctrlPages = PageController(
+        initialPage: 0,
+        viewportFraction: 1.0,
+        keepPage: true
+    );
+
+
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery .of(context) .size .width;
-    PageController ctrlPages = PageController(
-      initialPage: 0,
-      viewportFraction: 1.0,
-      keepPage: true
-    );
+    final NavigateSectionBloc _navigateSectionBloc = BlocProvider.of<NavigateSectionBloc>(context);
+
     print("In RootWidget");
     return Scaffold(
-      body: Stack(children: <Widget>[
-        Container(
-          color: Colors.greenAccent,
-          child: PageView.builder(
-            controller: ctrlPages,
-            physics: new ClampingScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            itemBuilder: (context, position) {
-              var pageColor = position % 2 == 0 ? Colors.pink : Colors.cyan;
-
-              switch(position) {
-                case 0:
-                  return Container(
-                    color: pageColor,
-                    child: Text("Welcome : In position:$position"),
-                  );
-                  break;
-                case 1:
-                  return Container(
-                    color: pageColor,
-                    child: Text("Config: In position:$position"),
-                  );
-                  break;
-                case 2:
-                  return Container(
-                    color: pageColor,
-                    child: Text("Assist: In position:$position"),
-                  );
-                  break;
-                case 3:
-                  return Container(
-                    color: pageColor,
-                    child: SurveyWidget( posL: width * 0.08, ),
-                  );
-                  break;
-                case 4:
-                  return Container(
-                    color: pageColor,
-                    child: Text("Graph: In position:$position"),
-                  );
-                  break;
-                default:
-                  return Container(
-                    color: pageColor,
-                    child: Text("Error: In position:$position"),
-                  );
-              }
-
-            },
+        body: Stack(children: <Widget>[
+          Container(
+            color: Colors.greenAccent,
+            child:PageView.builder(
+              controller: _ctrlPages,
+              physics: new ClampingScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, iPageNum) {
+                print("Page: $iPageNum");
+                return showSectionWidget(context, iPageNum);
+              },
+            ),
           ),
-        ),
 
-        Positioned(
-          left: 0,
-          child: NavigateSection(
-            controller: ctrlPages,
-            itemCount: 5,
-            onSectionSelected: (int page) {
-              //ctrlPages.jumpToPage(page);
-              // TODO: Add in BLoC function
-              ctrlPages.animateToPage( page,
-                  duration: _kDuration,
-                  curve: _kCurve
-              );
-            },
+          BlocListener(
+              bloc: _navigateSectionBloc,
+              listener:(context, state) {
+                 // TODO trigger section page change
+              },
+              child: Positioned (
+                left: 0,
+                child: NavigateSection(
+                  controller: _ctrlPages,
+                  itemCount: 5,
+                  onSectionSelected: (int page) {
+                    print("page sel: $page");
+
+                    // TODO: Add in BLoC function
+                    _ctrlPages.animateToPage( page,
+                        duration: _kDuration,
+                        curve: _kCurve
+                    );
+
+                    // Below event will make sure our OnTransistion will be called.
+                    // This will help in tracking all the events at one place.
+                    NavigateSectionEvent _naviEvent;
+
+                    switch(page) {
+                      case 0: _naviEvent = NavigateSectionEvent.welcome; break;
+                      case 1: _naviEvent = NavigateSectionEvent.config; break;
+                      case 2: _naviEvent = NavigateSectionEvent.assist; break;
+                      case 3: _naviEvent = NavigateSectionEvent.survey; break;
+                      case 4: _naviEvent = NavigateSectionEvent.graph; break;
+                    }
+                    _navigateSectionBloc.dispatch(_naviEvent);
+                  },
+                ),
+              )
           ),
-        )
-      ], )
+        ], )
     );
+  }
+
+  void navigateToSection(int iPageNum)
+  {
+    _ctrlPages.animateToPage( iPageNum, duration: _kDuration,
+      curve: _kCurve
+     );
+  }
+
+  Widget showSectionWidget(BuildContext context, int iPageNum) {
+
+    var pageColor = iPageNum % 2 == 0 ? Colors.pink : Colors.cyan;
+    double width = MediaQuery .of(context) .size .width;
+    Widget wPageWidget;
+
+    // TODO add in the array of widgets and import array
+    switch(iPageNum) {
+      case 0: wPageWidget = Text("1. Welcome : In page:$iPageNum"); break;
+      case 1: wPageWidget = Text("2. Config : In page:$iPageNum"); break;
+      case 2: wPageWidget = Text("3. Assist : In page:$iPageNum"); break;
+      case 3: wPageWidget = SurveyWidget( posL: width * 0.08, ); break;
+      case 4: wPageWidget = Text("5. Graph : In page:$iPageNum"); break;
+      default :wPageWidget = Text("6. Extra page! : In page:$iPageNum"); break;
+    }
+
+    return  Container( color: pageColor, child: wPageWidget, );
   }
 }
 

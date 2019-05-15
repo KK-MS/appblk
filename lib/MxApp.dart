@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // BLoC
 import 'package:mxsa1905/bloc/theme_bloc.dart';
 import 'package:mxsa1905/bloc/counter_bloc.dart';
+import 'package:mxsa1905/bloc/navigate_section_bloc.dart';
 
 // Event
 // import 'package:mxsa1905/event/counter_event.dart';
@@ -23,6 +24,7 @@ class MxApp extends StatefulWidget {
 }
 
 class _MxAppState extends State<MxApp> {
+  final NavigateSectionBloc _navigateSectionBloc = NavigateSectionBloc();
   final CounterBloc _counterBloc = CounterBloc();
   final ThemeBloc _themeBloc = ThemeBloc();
 
@@ -50,6 +52,7 @@ class _MxAppState extends State<MxApp> {
     var strTitle = "Default";
     return BlocProviderTree(
       blocProviders: [
+        BlocProvider<NavigateSectionBloc>(bloc: _navigateSectionBloc),
         BlocProvider<CounterBloc>(bloc: _counterBloc),
         BlocProvider<ThemeBloc>(bloc: _themeBloc)
       ],
@@ -81,6 +84,7 @@ class _MxAppState extends State<MxApp> {
   void dispose() {
     _counterBloc.dispose();
     _themeBloc.dispose();
+    _navigateSectionBloc.dispose();
     super.dispose();
   }
 }

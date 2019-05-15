@@ -1,7 +1,7 @@
 //import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'NavigateContent.dart';
+import 'navigate_content.dart';
 
 class MySwiperCard extends StatelessWidget{
 
