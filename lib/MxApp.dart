@@ -33,16 +33,10 @@ class _MxAppState extends State<MxApp> {
   SurveyBloc _surveyBloc = SurveyBloc();
 
   var thme = ThemeData(
-    // Define the default Brightness and Colors
     brightness: Brightness.light, // light-> font in black
     primaryColor: Colors.red,// lightBlue[800],
     accentColor: Colors.redAccent,//.cyan[600],
-
-    // Define the default Font Family
     fontFamily: 'Montserrat',
-
-    // Define the default TextTheme. Use this to specify the default
-    // text styling for headlines, titles, bodies of text, and more.
     textTheme: TextTheme(
       headline: TextStyle(
           fontSize: 72.0, fontWeight: FontWeight.bold),
@@ -54,24 +48,17 @@ class _MxAppState extends State<MxApp> {
   @override
   void initState() {
     super.initState();
-    //assert(_debugLifecycleState == _StateLifecycle.created);
-    //_surveyBloc = SurveyBloc();
-    print("Calling initState =============================");
     fileServiceLoadAppCsvData().then((SurveyData oAppModel) {
-      g_SurveyData = oAppModel;
-      String a = oAppModel.objSurveyData.strPrjName;
-      print("INIT STORE. $a");
-    }).catchError((e) => 201);
-    print("ending initState =============================");
+      _surveyBloc = new SurveyBloc(initStateData: oAppModel);
 
+      print(oAppModel.objSurveyData.display());
+
+    }).catchError((e) => 201);
   }
 
   @override
   Widget build(BuildContext context) {
     var strTitle = "Default";
-
-    //String a = g_SurveyData.objSurveyData.strPrjName;
-    //print("INIT STORE. $a");
 
     return BlocProviderTree(
       blocProviders: [
@@ -84,15 +71,12 @@ class _MxAppState extends State<MxApp> {
         bloc: _themeBloc,
         builder: (_, ThemeData theme) {
           strTitle = "Default";
-
           if (theme != ThemeData.dark() ) {
             strTitle = "Theme change to non-dark !!";
-            print(strTitle);
             theme = thme;
+            print(strTitle);
           }
-
           theme = thme;
-
           return MaterialApp(
             title: strTitle,
             home: RootWidget(),
@@ -112,4 +96,3 @@ class _MxAppState extends State<MxApp> {
     super.dispose();
   }
 }
-

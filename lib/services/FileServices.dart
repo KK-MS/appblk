@@ -32,40 +32,39 @@ Future<SurveyData> fileServiceLoadAppCsvData() async {
   print("Before csv load....");
   String csvPage = await _loadAppCsvDataAsset();
 
-  print("aftter csv loadstring...$csvPage.");
+  //print("aftter csv loadstring...$csvPage.");
 
   List<List<dynamic>> parsedListCSV = const CsvToListConverter().convert(csvPage);
   String csvParse = parsedListCSV.toString();
-
   int csvLen = parsedListCSV.length;
-
   print("CSV Len:$csvLen");
-  print("CSV Data:$csvParse");
+  //print("CSV Data:$csvParse");
 
   SurveyData objAppStore = new SurveyData.fromCSV(parsedListCSV);
   return objAppStore;
 }
 
 // SYNC file read
-//String syncLoadAppCsvDataAsset() {
-//  return rootBundle.loadString('assets/csv/QA_EN.csv').toString();
-//}
-//SurveyData syncFileServiceLoadAppCsvData() {
-//  print(" In syncFileServiceLoadAppCsvData");
-//
-//  String csvPage = syncLoadAppCsvDataAsset();
-//  List<List<dynamic>> parsedListCSV = const CsvToListConverter().convert(csvPage);
-//
-//  String temp = parsedListCSV[0][0].toString();
-//  //print(parsedListCSV);
-//  print(" --------------------$temp ");
-//
-//  SurveyData objAppStore = new SurveyData.fromCSV(parsedListCSV);
-//
-//  print(objAppStore);
-//
-//  return objAppStore;
-//}
+String syncLoadAppCsvDataAsset() {
+  return rootBundle.loadString('assets/csv/QA_EN.csv').toString();
+}
+SurveyData syncFileServiceLoadAppCsvData() {
+  print(" In syncFileServiceLoadAppCsvData");
+
+  String csvPage = syncLoadAppCsvDataAsset();
+  List<List<dynamic>> parsedListCSV = const CsvToListConverter().convert(csvPage);
+  String csvParse = parsedListCSV.toString();
+  int csvLen = parsedListCSV.length;
+
+  print("sssssssssssss CSV Len:$csvLen");
+  print("sssssssssssss CSV Data:$csvParse");
+
+  SurveyData objAppStore = new SurveyData.fromCSV(parsedListCSV);
+
+  print(objAppStore);
+
+  return objAppStore;
+}
 
 // See JSON format access:
 // https://medium.com/flutter-community/parsing-complex-json-in-flutter-747c46655f51
