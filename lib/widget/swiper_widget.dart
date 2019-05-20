@@ -21,13 +21,10 @@ class MySwiperCard extends StatelessWidget{
             margin: EdgeInsets.all(20),
             child: Container(
               //child: Image.network("http://via.placeholder.com/350x150",fit: BoxFit.fill,),
-              child: Image.network("http://via.placeholder.com/350x150",fit: BoxFit.contain,),
-              //child: Text("Hello $index"),
+              //child: Image.network("http://via.placeholder.com/350x150",fit: BoxFit.contain,),
+              child: Text("Hello $index"),
 
             )
-
-
-
         );
       },
       itemCount: 6,

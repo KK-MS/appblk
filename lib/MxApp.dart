@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mxsa1905/bloc/theme_bloc.dart';
 import 'package:mxsa1905/bloc/counter_bloc.dart';
 import 'package:mxsa1905/bloc/navigate_section_bloc.dart';
+import 'package:mxsa1905/bloc/survey_bloc.dart';
 
 // Event
 // import 'package:mxsa1905/event/counter_event.dart';
@@ -17,6 +18,8 @@ import 'package:mxsa1905/bloc/navigate_section_bloc.dart';
 // App widget
 //import 'package:mxsa1905/widget/counter_page_widget.dart';
 import 'package:mxsa1905/widget/root_widget.dart';
+
+import 'package:mxsa1905/services/FileServices.dart';
 
 class MxApp extends StatefulWidget {
   @override
@@ -27,6 +30,7 @@ class _MxAppState extends State<MxApp> {
   final NavigateSectionBloc _navigateSectionBloc = NavigateSectionBloc();
   final CounterBloc _counterBloc = CounterBloc();
   final ThemeBloc _themeBloc = ThemeBloc();
+  SurveyBloc _surveyBloc = SurveyBloc();
 
   var thme = ThemeData(
     // Define the default Brightness and Colors
@@ -48,13 +52,33 @@ class _MxAppState extends State<MxApp> {
   );
 
   @override
+  void initState() {
+    super.initState();
+    //assert(_debugLifecycleState == _StateLifecycle.created);
+    //_surveyBloc = SurveyBloc();
+    print("Calling initState =============================");
+    fileServiceLoadAppCsvData().then((SurveyData oAppModel) {
+      g_SurveyData = oAppModel;
+      String a = oAppModel.objSurveyData.strPrjName;
+      print("INIT STORE. $a");
+    }).catchError((e) => 201);
+    print("ending initState =============================");
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     var strTitle = "Default";
+
+    //String a = g_SurveyData.objSurveyData.strPrjName;
+    //print("INIT STORE. $a");
+
     return BlocProviderTree(
       blocProviders: [
         BlocProvider<NavigateSectionBloc>(bloc: _navigateSectionBloc),
         BlocProvider<CounterBloc>(bloc: _counterBloc),
-        BlocProvider<ThemeBloc>(bloc: _themeBloc)
+        BlocProvider<ThemeBloc>(bloc: _themeBloc),
+        BlocProvider<SurveyBloc>(bloc: _surveyBloc)
       ],
       child: BlocBuilder(
         bloc: _themeBloc,

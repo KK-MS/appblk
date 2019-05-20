@@ -34,7 +34,28 @@ dependencies:
   google_maps_flutter: ^0.5.13
 
   # permission for access location, camera, etc.
-  permission: ^0.1.1
+  # permission: ^0.1.1
+  permission:
+    git:
+      url: https://github.com/devadrianapostol/permission
+  # To access file
+  # finding commonly used locations on the filesystem
+  path_provider: ^1.0.0
+
+  # A plug-in that can call native APP to open files
+  # with string result in flutter,support iOS(UTI) and android(intent)
+  open_file: ^2.0.1+2
+
+  # A Flutter plugin for share file (image, PDF, video, ecc) or text.
+  # simple_share: ^0.0.1+4
+
+  # A dart csv to list converter.
+  csv: ^4.0.3
+
+  # This package contains encoders and decoders for converting between different
+  # data representations
+  convert: ^2.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -52,9 +73,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #  - images/a_dot_burr.jpeg
-  #  - images/a_dot_ham.jpeg
+  assets:
+    - assets/csv/QA_EN.csv
+  # - images/a_dot_burr.jpeg
+  # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
