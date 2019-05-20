@@ -16,6 +16,7 @@ import 'package:mxsa1905/event/navigate_section_event.dart';
 // App include widgets
 import 'navigate_section.dart';
 import 'survey_widget.dart';
+import 'map_widget.dart';
 
 // See Counter_page_widget.dart for design
 // UI which captures the Action, will be under a function. As it along can change
@@ -34,6 +35,7 @@ class RootWidget extends StatelessWidget {
         keepPage: true
     );
 
+  //@override Widget build(BuildContext context) { return MapWidget(); }
 
   @override
   Widget build(BuildContext context) {
@@ -109,9 +111,9 @@ class RootWidget extends StatelessWidget {
 
     // TODO add in the array of widgets and import array
     switch(iPageNum) {
-      case 0: wPageWidget = Text("1. Welcome : In page:$iPageNum"); break;
+      case 0: wPageWidget = SurveyWidget( posL: width * 0.08, ); break;//Text("1. Welcome : In page:$iPageNum"); break;
       case 1: wPageWidget = Text("2. Config : In page:$iPageNum"); break;
-      case 2: wPageWidget = Text("3. Assist : In page:$iPageNum"); break;
+      case 2: wPageWidget = MapWidget(); break;
       case 3: wPageWidget = SurveyWidget( posL: width * 0.08, ); break;
       case 4: wPageWidget = Text("5. Graph : In page:$iPageNum"); break;
       default :wPageWidget = Text("6. Extra page! : In page:$iPageNum"); break;

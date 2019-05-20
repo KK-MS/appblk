@@ -3,6 +3,8 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'swiper_widget.dart';
 import 'navigate_content.dart';
 
+import 'package:mxsa1905/bloc/survey_bloc.dart';
+
 class SurveyWidget extends StatelessWidget{
   final posL;
 
@@ -47,7 +49,7 @@ class SurveyWidget extends StatelessWidget{
                                   //margin: EdgeInsets.fromLTRB(0, 0, 250, 0),
                                   height: height * 0.75,
                                   width: width - 250, //- sectionBarWidth
-                                  child: MySwiperCard(),
+                                  child: MySwiperCard(ctrlSwipe: ctrlSwipe,),
                                   //child: Text("body"),
                                   decoration: BoxDecoration(
                                     border: Border.all( color: Color(0xFF000000), width: 1.0, ),
@@ -97,11 +99,39 @@ class SurveyWidget extends StatelessWidget{
 
                                   height: height * 0.15,
                                   width: width - posL,// - sectionBarWidth,
-                                  child: Text("Pagination"),
                                   decoration: BoxDecoration(
                                     color: Colors.blueAccent,
                                     border: Border.all( color: Color(0xFF000000), width: 1.0, ),
                                   ),
+
+            child: NavigateContent(
+              controller: ctrlSwipe,
+              itemCount: 6,
+              onSectionSelected: (int page) {
+                print("SI: $page");
+                ctrlSwipe.move(page);
+              },
+            ),
+
+                                  //child: Text("Pagination"),
+                                       //pagination:
+//                                       child:
+//                                       new SwiperCustomPagination(
+//          builder:(BuildContext context, SwiperPluginConfig config){
+//            var indx = config.activeIndex;
+//            print("Currn is $indx");
+//            //return Text("Currn is $indx");
+//            return NavigateContent(
+//              controller: ctrlSwipe,
+//              itemCount: 6,
+//              onSectionSelected: (int page) {
+//                print("SI: $page");
+//                ctrlSwipe.move(page);
+//              },
+//            );
+//          }
+//      ),
+
                                 ),
                               ),
 

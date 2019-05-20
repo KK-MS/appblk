@@ -5,7 +5,10 @@ import 'navigate_content.dart';
 
 class MySwiperCard extends StatelessWidget{
 
-  final ctrlSwipe = new SwiperController();
+  //final ctrlSwipe = new SwiperController();
+  final ctrlSwipe;
+
+  MySwiperCard({this.ctrlSwipe});
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +39,21 @@ class MySwiperCard extends StatelessWidget{
       //layout: SwiperLayout.STACK
       //pagination: new SwiperPagination( ),
 
-      pagination:new SwiperCustomPagination(
-          builder:(BuildContext context, SwiperPluginConfig config){
-            var indx = config.activeIndex;
-            print("Currn is $indx");
-            //return Text("Currn is $indx");
-            return NavigateContent(
-              controller: ctrlSwipe,
-              itemCount: 6,
-              onSectionSelected: (int page) {
-                print("SI: $page");
-                ctrlSwipe.move(page);
-              },
-            );
-          }
-      ),
+      //pagination:new SwiperCustomPagination(
+      //    builder:(BuildContext context, SwiperPluginConfig config){
+      //      var indx = config.activeIndex;
+      //      print("Currn is $indx");
+      //      //return Text("Currn is $indx");
+      //      return NavigateContent(
+      //        controller: ctrlSwipe,
+      //        itemCount: 6,
+      //        onSectionSelected: (int page) {
+      //          print("SI: $page");
+      //          ctrlSwipe.move(page);
+      //        },
+      //      );
+      //    }
+      //),
 
       //control: ctrlSwipe,
       controller: ctrlSwipe,

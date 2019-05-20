@@ -56,5 +56,31 @@ void main() {
 // RootWidget => Creates section pages along with its page navigation
 // NavigateSection => Navigate section pages
 //
-// TODO
+// TODO send email
 // https://pub.dev/packages/flutter_email_sender
+
+// TODO Flutter Table layout with CSV data
+// https://gist.github.com/Rahiche/9b4b2d3b5c24dddbbe662b58c5a2dcd2
+
+// ASYNC
+// Challenge: To read a file into the model data and then widget is created at
+//            as fast as possible.
+// Method-1:
+//   1. Have respective reading of file in "initState()", 
+//      this will make sure the DATA is read from file and
+//      WIDGETs are built after it.
+//   2. Use ASYNC can help reading of data file and other app init to execute
+//      parallely. Thus fast booting or launch of app
+//   
+// Method-2:
+//   1. Works if the first screen is not dependent on the FILE data.
+//   2. Have a file reading from BUILD function
+//   3. Assumption: 
+//      i. the first screen does not need, and 
+//      ii. the time taken by user to navigates to widget that needs a data, 
+//          is sufficient to load the data from file.
+//   4. Have a SIGNATURE check at the last field of the DATA
+//   5. Before reading erase SIGNATURE/FLAG and set it after read is done.
+//   6. This way, we are sure to put right content to the widget 
+//   7. If data is still not loaded, have a default data or show processing
+//      sign.

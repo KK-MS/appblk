@@ -31,7 +31,10 @@ dependencies:
   flutter_swiper : ^1.1.6
 
   #
-  google_maps_flutter: ^0.4.0
+  google_maps_flutter: ^0.5.13
+
+  # permission for access location, camera, etc.
+  permission: ^0.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
