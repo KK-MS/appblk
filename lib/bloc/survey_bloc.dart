@@ -12,6 +12,8 @@ class SurveyEvent {
   int iIdxVar2;
   int iAnsRow;
   int iAnsCol;
+  int iDoInc;
+  int iDoDec;
 }
 
 //SurveyData gSurveyData = fileServiceLoadAppCsvData();
@@ -29,6 +31,9 @@ class SurveyBloc extends Bloc<SurveyEvent, SurveyData> {
   Stream<SurveyData> mapEventToState(SurveyEvent event) async* {
     //yield currentState;
     //return SurveyData.fromEvent(currentState, event);
+
+    print("SurveyBloc:");
+
     yield SurveyData.fromEvent(currentState, event);
 
   }
@@ -41,12 +46,16 @@ class SurveyData {
    int iIdxVar2;
    int iAnsRow;
    int iAnsCol;
+   int iDoInc;
+   int iDoDec;
 
    SurveyData({this.objSurveyData,
      this.iIdxVar1,
      this.iIdxVar2,
      this.iAnsRow,
      this.iAnsCol,
+     this.iDoInc,
+     this.iDoDec,
    });
 
    factory SurveyData.fromCSV(List<List<dynamic>> parsedCSV) {
@@ -58,6 +67,8 @@ class SurveyData {
        iIdxVar2: 0,
        iAnsRow: 0,
        iAnsCol: 0,
+       iDoInc: 0,
+       iDoDec: 0,
      );
    }
 
@@ -65,6 +76,24 @@ class SurveyData {
        SurveyData currData,
        SurveyEvent currEvent
        ) {
+
+     SurveyModelCSV _objSurveyData = currData.objSurveyData;
+     int _iIdxVar1 = currEvent.iIdxVar1;
+     int _iIdxVar2 = currEvent.iIdxVar2;
+     int _iAnsRow  = currEvent.iAnsRow ;
+     int _iAnsCol  = currEvent.iAnsCol ;
+
+
+     print("SurveyEvent: r:$_iAnsRow, c:$_iAnsCol, v1:$_iIdxVar1, v2:$_iIdxVar2");
+
+    _iAnsRow +=4;
+    _iAnsCol+=3;
+    print(currData.objSurveyData.getVal(_iAnsRow, _iAnsCol));
+
+     double iAns = double.parse(currData.objSurveyData.getVal(_iAnsRow, _iAnsCol));
+     iAns++;
+
+     currData.objSurveyData.setVal(_iAnsRow, _iAnsCol, iAns.toString());
 
      return SurveyData(
        objSurveyData: currData.objSurveyData,
@@ -78,34 +107,14 @@ class SurveyData {
    String getMainQ(int iQAIdx) {
      String strMainQKey = 'M';
      String strMainQVal = '';
-    int i, j;
-    int rows, cols;
+     int i;
 
-    List<List> surveyCSV = objSurveyData.surveyCSV;
-    rows = surveyCSV.length;
+     iQAIdx++;
+     strMainQKey = strMainQKey + '00' + iQAIdx.toString();
 
-    iQAIdx++;
-    strMainQKey = strMainQKey + '00' + iQAIdx.toString();
+     i = objSurveyData.getKeyRowIdx(strMainQKey);
+     strMainQVal = objSurveyData.getVal(i, 1);
 
-    //print("M KEY: $strMainQKey ---------------");
-
-    //rows = 1; // should be a max row we have to search.
-    for(i=0; i< rows; i++) {
-      cols = surveyCSV[i].length;
-      for (j=0; j< 1; j++) { // first cols for type
-        String strQt = surveyCSV[i][j].toString();
-        //print(" $strQt == $strMainQKey");
-
-        if (strQt.trim() == strMainQKey){
-          strMainQVal = surveyCSV[i][1].toString(); // Hardcoded ?
-          print("MQ: $strMainQKey, $strMainQVal");
-          return strMainQVal;
-          //break;
-        }
-        //break;
-      }
-    }
-     print("Error: Not here!! MQ: $strMainQKey: $strMainQVal");
      return strMainQVal;
    }
 
@@ -185,6 +194,39 @@ class SurveyData {
      print("Error: $strVal: $iQIdx, $strKey, => $iAnsIdx");
      return strVal + strKey;
    }
+
+   void setAns(int iQIdx, int iSubQIdx, int iVar1, int iVar2, int iAns) {
+     String strKey = 'M';
+     String strVal = 'Not Found.';
+     int i, j, k;
+     int rows, cols;
+
+     List<List> surveyCSV = objSurveyData.surveyCSV;
+     rows = surveyCSV.length;
+
+     int iAnsIdx = 3 + (iVar1 * 4) + iVar2; // 2 => Offset of ans start
+
+     strVal = surveyCSV[iQIdx + iSubQIdx][iAnsIdx].toString(); // Hardcoded ?
+
+     iQIdx++;
+     print("In setAns -------------");
+     print("In setAns $iQIdx, $iSubQIdx, $iVar1, $iVar2,=> $iAnsIdx :$iAns --");
+
+     strKey = strKey + '00' + iQIdx.toString() + '0' + iSubQIdx.toString(); // TODO add logical for 00
+
+
+     //int getKeyRowIdx(String strKeyVal) {
+     for(i=0; i< rows; i++) {
+
+       String strQt = surveyCSV[i][0].toString();
+
+       if (strQt.trim().contains(strKey, 0)){
+          strVal = surveyCSV[i][iAnsIdx].toString(); // Hardcoded ?
+          print("SQ: $strKey, $iAnsIdx => $strVal");
+       }
+     }
+     print("Error: $strVal: $iQIdx, $strKey, => $iAnsIdx");
+   }
 }
 // @ MODEL @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 class SurveyModelCSV {
@@ -205,12 +247,35 @@ class SurveyModelCSV {
 
     for(i=0; i< rows; i++) {
       cols = surveyCSV[i].length;
-
       for (j=0; j< cols; j++) {
         print(surveyCSV[i][j].toString());
       }
     }
   }
+
+  void setVal(int rows, int cols, String strVal) {
+    surveyCSV[rows][cols] = strVal;
+  }
+
+  String getVal(int rows, int cols) {
+    return surveyCSV[rows][cols].toString();
+  }
+
+  int getKeyRowIdx(String strKeyVal) {
+    int rows = surveyCSV.length;
+    int iKeyIdx = -1;
+    int i;
+
+    for(i=0; i< rows; i++) {
+      String strQt = surveyCSV[i][0].toString();
+      if (strQt.trim().contains(strKeyVal.trim(), 0)){
+        print("KeyRowIdx: $strKeyVal at $i");
+        return i;
+      }
+    }
+    return iKeyIdx;
+  }
+
 }
 ///////////////////////////////////////////////////////////////////////
 class SurveyModelFlat {

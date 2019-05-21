@@ -204,8 +204,15 @@ Widget addQAGroup(int cardIndex, SurveyData surveyData, SurveyBloc _surveyBloc) 
   int iCount  = surveyData.getSubQCount(cardIndex);
   int i;
 
-  commentWidgets.add(addQATitle("Parametersxx"));
-  commentWidgets.add(addQARow(0, surveyData.getMainQ(cardIndex), _surveyBloc) );
+  commentWidgets.add(
+      addQATitle("Parametersxx")
+  );
+  commentWidgets.add(
+      addQARow(
+          0,
+          surveyData.getMainQ(cardIndex),
+          _surveyBloc)
+  );
 
   for (i =0; i<iCount; i++ ) {
     //commentWidgets.add(Text(comment.text)); // TODO: Whatever layout you need for each widget.
@@ -314,7 +321,11 @@ Widget addQAGroup(int cardIndex, SurveyData surveyData, SurveyBloc _surveyBloc) 
   Widget addAnsBox(int iQNum, int iANum, SurveyBloc _surveyBloc) {
     // TODO STORE Get from store
     // TODO Remove intermediate variable
-    double dVal;
+
+    int _iAnsRow =4 + iQNum;
+    int _iAnsCol =3 + iANum;
+
+    double iAns = double.parse(_surveyBloc.currentState.objSurveyData.getVal(_iAnsRow, _iAnsCol));
 
     //int iUserAnsStartIndex = iSelectedUserNum  * iNumOfTestVehicles;
 
@@ -388,7 +399,8 @@ Widget addQAGroup(int cardIndex, SurveyData surveyData, SurveyBloc _surveyBloc) 
 
           //});
         },
-        child: Text("X $iQNum, $iANum"),//Text(strValue)
+        //child: Text("$iQNum, $iANum"),//Text(strValue)
+        child: Text("$iQNum, $iANum, $iAns"),//Text(strValue)
       ),
 
       decoration: new BoxDecoration(
