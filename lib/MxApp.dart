@@ -49,10 +49,10 @@ class _MxAppState extends State<MxApp> {
   void initState() {
     super.initState();
     fileServiceLoadAppCsvData().then((SurveyData oAppModel) {
-      _surveyBloc = new SurveyBloc(initStateData: oAppModel);
-
-      print(oAppModel.objSurveyData.display());
-
+      //print(oAppModel.objSurveyData.display());
+      setState(() {
+        this._surveyBloc = new SurveyBloc(initStateData: oAppModel);
+      });
     }).catchError((e) => 201);
   }
 

@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mxsa1905/bloc/theme_bloc.dart';
 import 'package:mxsa1905/bloc/counter_bloc.dart';
 import 'package:mxsa1905/bloc/navigate_section_bloc.dart';
+import 'package:mxsa1905/bloc/survey_bloc.dart';
 
 // App event imports
 import 'package:mxsa1905/event/counter_event.dart';
@@ -35,11 +36,24 @@ class RootWidget extends StatelessWidget {
         keepPage: true
     );
 
+
+  Widget get _loadingView {
+    return new Center(
+      child: new CircularProgressIndicator(),
+    );
+  }
   //@override Widget build(BuildContext context) { return MapWidget(); }
 
   @override
   Widget build(BuildContext context) {
     final NavigateSectionBloc _navigateSectionBloc = BlocProvider.of<NavigateSectionBloc>(context);
+    final SurveyBloc _surveyBloc = BlocProvider.of<SurveyBloc>(context);
+
+    if (_surveyBloc.initStateData == null) {
+      print("In loading ...");
+      return _loadingView;
+    }
+
 
     print("In RootWidget");
     return Scaffold(

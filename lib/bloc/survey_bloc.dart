@@ -74,6 +74,117 @@ class SurveyData {
        iAnsCol : currEvent.iAnsCol,
      );
    }
+
+   String getMainQ(int iQAIdx) {
+     String strMainQKey = 'M';
+     String strMainQVal = '';
+    int i, j;
+    int rows, cols;
+
+    List<List> surveyCSV = objSurveyData.surveyCSV;
+    rows = surveyCSV.length;
+
+    iQAIdx++;
+    strMainQKey = strMainQKey + '00' + iQAIdx.toString();
+
+    //print("M KEY: $strMainQKey ---------------");
+
+    //rows = 1; // should be a max row we have to search.
+    for(i=0; i< rows; i++) {
+      cols = surveyCSV[i].length;
+      for (j=0; j< 1; j++) { // first cols for type
+        String strQt = surveyCSV[i][j].toString();
+        //print(" $strQt == $strMainQKey");
+
+        if (strQt.trim() == strMainQKey){
+          strMainQVal = surveyCSV[i][1].toString(); // Hardcoded ?
+          print("MQ: $strMainQKey, $strMainQVal");
+          return strMainQVal;
+          //break;
+        }
+        //break;
+      }
+    }
+     print("Error: Not here!! MQ: $strMainQKey: $strMainQVal");
+     return strMainQVal;
+   }
+
+
+   int getSubQCount(int iQAIdx) {
+     String strKey = 'S';
+     String strMainQVal = '';
+     int i, j, k;
+     int rows, cols;
+     int iCount = 0;
+
+     List<List> surveyCSV = objSurveyData.surveyCSV;
+     rows = surveyCSV.length;
+
+     iQAIdx++;
+     strKey = strKey + '00' + iQAIdx.toString(); // TODO add logical for 00
+
+     for(i=0; i< rows; i++) {
+       String strQt = surveyCSV[i][0].toString();
+       //if (strQt.trim() == strKey)
+       if (strQt.trim().contains(strKey, 0)){
+         iCount++;
+       }
+     }
+     print("$iQAIdx, $strKey, : $iCount");
+     return iCount;
+   }
+
+   String getSubQ(int iQAIdx, int iSubQAIdx){
+     String strKey = 'S';
+     String strMainQVal = 'Not Found.';
+     int i, j, k;
+     int rows, cols;
+
+     List<List> surveyCSV = objSurveyData.surveyCSV;
+     rows = surveyCSV.length;
+
+     iQAIdx++; iSubQAIdx++;
+     strKey = strKey + '00' + iQAIdx.toString() + '0' + iSubQAIdx.toString(); // TODO add logical for 00
+
+     for(i=0; i< rows; i++) {
+       String strQt = surveyCSV[i][0].toString();
+       //if (strQt.trim() == strKey)
+       if (strQt.trim().contains(strKey, 0)){
+          strMainQVal = surveyCSV[i][1].toString(); // Hardcoded ?
+          print("SQ: $strKey, $strMainQVal");
+          return strMainQVal;
+       }
+     }
+     print("$iQAIdx, $strKey, : $strMainQVal");
+     return strMainQVal + strKey;
+   }
+
+   getAns(int iQIdx, int iSubQIdx, int iVar1, int iVar2) {
+     String strKey = 'S';
+     String strVal = 'Not Found.';
+     int i, j, k;
+     int rows, cols;
+
+     List<List> surveyCSV = objSurveyData.surveyCSV;
+     rows = surveyCSV.length;
+
+     int iAnsIdx = 3 + (iVar1 * 4) + iVar2; // 2 => Offset of ans start
+
+     iQIdx++;
+     print("In getAns -------------");
+     print("In getAns $iQIdx, $iSubQIdx, $iVar1, $iVar2,=> $iAnsIdx -----");
+     strKey = strKey + '00' + iQIdx.toString() + '0' + iSubQIdx.toString(); // TODO add logical for 00
+     for(i=0; i< rows; i++) {
+       String strQt = surveyCSV[i][0].toString();
+       if (strQt.trim().contains(strKey, 0)){
+          strVal = surveyCSV[i][iAnsIdx].toString(); // Hardcoded ?
+          print("SQ: $strKey, $iAnsIdx => $strVal");
+          return strVal;
+       }
+     }
+     print("Error: $strVal: $iQIdx, $strKey, => $iAnsIdx");
+     return strVal + strKey;
+   }
 }
 // @ MODEL @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 class SurveyModelCSV {
@@ -101,7 +212,7 @@ class SurveyModelCSV {
     }
   }
 }
-
+///////////////////////////////////////////////////////////////////////
 class SurveyModelFlat {
   String strPrjID;
   String strPrjName;

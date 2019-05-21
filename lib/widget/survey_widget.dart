@@ -26,45 +26,45 @@ class SurveyWidget extends StatelessWidget{
     final SurveyBloc _surveyBloc = BlocProvider.of<SurveyBloc>(context);
 
     return Container (
-                  //color: position % 2 == 0 ? Colors.pink : Colors.cyan,
+      //color: position % 2 == 0 ? Colors.pink : Colors.cyan,
 
-                  child: Container(
-                    //margin: EdgeInsets.fromLTRB(posL, 15, 0, 0),
-                    margin: EdgeInsets.fromLTRB(posL, 0, 0, 0),
-                    decoration: BoxDecoration(
-                      border: Border.all( color: Color(0xFF000000), width: 2.0, ),
-                    ),
-                    child: Column(
-                      children: <Widget>[
+        child: Container(
+          //margin: EdgeInsets.fromLTRB(posL, 15, 0, 0),
+          margin: EdgeInsets.fromLTRB(posL, 0, 0, 0),
+          decoration: BoxDecoration(
+            border: Border.all( color: Color(0xFF000000), width: 2.0, ),
+          ),
+          child: Column(
+            children: <Widget>[
 
-                        Container(
-                          height: height * 0.1,
-                          width: width, //width - sectionBarWidth,
-                          child: Text("Title"),
-                          decoration: BoxDecoration(
-                            border: Border.all( color: Color(0xFF000000), width: 1.0, ),
-                          ),
-                        ),
+              Container(
+                height: height * 0.1,
+                width: width, //width - sectionBarWidth,
+                child: Text("Title"),
+                decoration: BoxDecoration(
+                  border: Border.all( color: Color(0xFF000000), width: 1.0, ),
+                ),
+              ),
 
-                        BlocBuilder(
-                          bloc: _surveyBloc,
-                          builder: (_, SurveyData surveyData) {
-                            return displayQALayout(context, surveyData);
-                          },
-                        ),
+              BlocBuilder(
+                bloc: _surveyBloc,
+                builder: (_, SurveyData surveyData) {
+                  return displayQALayout(context, surveyData);
+                },
+              ),
 
-                       // Container(
-                       //   height: height * 0.15,
-                       //   width: width - sectionBarWidth,
-                       //   child: Text("Footer"),
-                       //   decoration: BoxDecoration(
-                       //     border: Border.all( color: Color(0xFF000000), width: 1.0, ),
-                       //   ),
-                       // ),
-                      ],
-                    ),
-                  )
-              );
+              // Container(
+              //   height: height * 0.15,
+              //   width: width - sectionBarWidth,
+              //   child: Text("Footer"),
+              //   decoration: BoxDecoration(
+              //     border: Border.all( color: Color(0xFF000000), width: 1.0, ),
+              //   ),
+              // ),
+            ],
+          ),
+        )
+    );
 
   }
 
@@ -83,10 +83,13 @@ class SurveyWidget extends StatelessWidget{
             children: <Widget>[
               Container(
                 //margin: EdgeInsets.fromLTRB(0, 0, 250, 0),
-                height: height * 0.75,
+                height: height * 0.80,
                 width: width - 250, //- sectionBarWidth
-                child: MySwiperCard(ctrlSwipe: ctrlSwipe,),
-                //child: Text("body"),
+
+                child: MySwiperCard(
+                  ctrlSwipe: ctrlSwipe,
+                ), // ### CARD  CCCCCCCCCCCCCCCCCCCCCCCC
+
                 decoration: BoxDecoration(
                   border: Border.all( color: Color(0xFF000000), width: 1.0, ),
                 ),
@@ -133,7 +136,7 @@ class SurveyWidget extends StatelessWidget{
                 child:
                 Container(
 
-                  height: height * 0.15,
+                  height: height * 0.10,
                   width: width - posL,// - sectionBarWidth,
                   decoration: BoxDecoration(
                     color: Colors.blueAccent,
