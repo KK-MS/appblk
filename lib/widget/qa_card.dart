@@ -50,7 +50,7 @@ class QACard extends StatelessWidget{
                   //Text(surveyData.getAns(cardIndex, 2, 1, 1)),
                   //Text(" | "),
 
-                  addQAGroup(cardIndex, surveyData),
+                  addQAGroup(cardIndex, surveyData, _surveyBloc),
                   //addToolBar(),
                   //addStatusInfo(),
                 ],
@@ -198,18 +198,18 @@ class QACard extends StatelessWidget{
         ));
   }
 
-Widget addQAGroup(int cardIndex, SurveyData surveyData) {
+Widget addQAGroup(int cardIndex, SurveyData surveyData, SurveyBloc _surveyBloc) {
 
   var commentWidgets = List<Widget>();
   int iCount  = surveyData.getSubQCount(cardIndex);
   int i;
 
   commentWidgets.add(addQATitle("Parametersxx"));
-  commentWidgets.add(addQARow(0, surveyData.getMainQ(cardIndex)));
+  commentWidgets.add(addQARow(0, surveyData.getMainQ(cardIndex), _surveyBloc) );
 
   for (i =0; i<iCount; i++ ) {
     //commentWidgets.add(Text(comment.text)); // TODO: Whatever layout you need for each widget.
-    commentWidgets.add(addQARow(1 + i, surveyData.getSubQ(cardIndex, i)));
+    commentWidgets.add(addQARow(1 + i, surveyData.getSubQ(cardIndex, i), _surveyBloc));
   }
 
   return Column( children: commentWidgets, );
@@ -249,7 +249,7 @@ Widget addQAGroup(int cardIndex, SurveyData surveyData) {
   }
 
 
-  Widget addQARow(int iQNum, String strQA) {
+  Widget addQARow(int iQNum, String strQA, SurveyBloc _surveyBloc) {
     return Container(
         margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
         child: Row(
@@ -268,10 +268,10 @@ Widget addQAGroup(int cardIndex, SurveyData surveyData) {
               ),
               //TODO add image/icon, click for info, Icon(Icons.volume_off),
             ),
-            addAnsBox(iQNum, 0),
-            addAnsBox(iQNum, 1),
-            addAnsBox(iQNum, 2),
-            addAnsBox(iQNum, 3),
+            addAnsBox(iQNum, 0, _surveyBloc),
+            addAnsBox(iQNum, 1, _surveyBloc),
+            addAnsBox(iQNum, 2, _surveyBloc),
+            addAnsBox(iQNum, 3, _surveyBloc),
           ],
         ));
   }
@@ -311,7 +311,7 @@ Widget addQAGroup(int cardIndex, SurveyData surveyData) {
   int iSelectedQ;
   int iSelectedA;
 
-  Widget addAnsBox(int iQNum, int iANum) {
+  Widget addAnsBox(int iQNum, int iANum, SurveyBloc _surveyBloc) {
     // TODO STORE Get from store
     // TODO Remove intermediate variable
     double dVal;
@@ -351,6 +351,16 @@ Widget addQAGroup(int cardIndex, SurveyData surveyData) {
       margin: const EdgeInsets.fromLTRB(1, 1, 1, 1),
       child: FlatButton(
         onPressed: () {
+
+          print("Bt Pressed QG: Q:$iQNum A:$iANum");
+          SurveyEvent event = new SurveyEvent();
+
+          event.iIdxVar1 = iANum;
+          event.iIdxVar2 = 0;
+          event.iAnsRow = iQNum;
+          event.iAnsCol = iANum;
+
+          _surveyBloc.dispatch(event);
           //print("Pressed QSet $iQASetNum, Q1/Q2: $iQNum, V:$iANum");
           //setState(() {
           //  iSelectedQ = iQNum;
